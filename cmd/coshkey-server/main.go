@@ -14,7 +14,6 @@ import (
 	"github.com/ITarako/coshkey_tree/internal/config"
 	"github.com/ITarako/coshkey_tree/internal/database"
 	"github.com/ITarako/coshkey_tree/internal/server"
-	"github.com/ITarako/coshkey_tree/internal/tracer"
 )
 
 var (
@@ -27,7 +26,6 @@ func main() {
 	}
 	cfg := config.GetConfigInstance()
 
-	migration := flag.Bool("migration", true, "Defines the migration start option")
 	flag.Parse()
 
 	log.Info().
@@ -58,25 +56,8 @@ func main() {
 	}
 	defer db.Close()
 
-	*migration = false // todo: need to delete this line for homework-4
-	if *migration {
-		if err = goose.Up(db.DB, cfg.Database.Migrations); err != nil {
-			log.Error().Err(err).Msg("Migration failed")
-
-			return
-		}
-	}
-
-	tracing, err := tracer.NewTracer(&cfg)
-	if err != nil {
-		log.Error().Err(err).Msg("Failed init tracing")
-
-		return
-	}
-	defer tracing.Close()
-
-	if err := server.NewGrpcServer(db, batchSize).Start(&cfg); err != nil {
-		log.Error().Err(err).Msg("Failed creating gRPC server")
+	if err := server.NewRestServer(db, batchSize).Start(&cfg); err != nil {
+		log.Error().Err(err).Msg("Failed creating rest server")
 
 		return
 	}

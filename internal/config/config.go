@@ -26,23 +26,13 @@ func GetConfigInstance() Config {
 
 // Database - contains all parameters database connection.
 type Database struct {
-	Host       string `yaml:"host"`
-	Port       string `yaml:"port"`
-	User       string `yaml:"user"`
-	Password   string `yaml:"password"`
-	Migrations string `yaml:"migrations"`
-	Name       string `yaml:"name"`
-	SslMode    string `yaml:"sslmode"`
-	Driver     string `yaml:"driver"`
-}
-
-// Grpc - contains parameter address grpc.
-type Grpc struct {
-	Port              int    `yaml:"port"`
-	MaxConnectionIdle int64  `yaml:"maxConnectionIdle"`
-	Timeout           int64  `yaml:"timeout"`
-	MaxConnectionAge  int64  `yaml:"maxConnectionAge"`
-	Host              string `yaml:"host"`
+	Host     string `yaml:"host"`
+	Port     string `yaml:"port"`
+	User     string `yaml:"user"`
+	Password string `yaml:"password"`
+	Name     string `yaml:"name"`
+	SslMode  string `yaml:"sslmode"`
+	Driver   string `yaml:"driver"`
 }
 
 // Rest - contains parameter rest json connection.
@@ -60,47 +50,11 @@ type Project struct {
 	CommitHash  string
 }
 
-// Metrics - contains all parameters metrics information.
-type Metrics struct {
-	Port int    `yaml:"port"`
-	Host string `yaml:"host"`
-	Path string `yaml:"path"`
-}
-
-// Jaeger - contains all parameters metrics information.
-type Jaeger struct {
-	Service string `yaml:"service"`
-	Host    string `yaml:"host"`
-	Port    string `yaml:"port"`
-}
-
-// Kafka - contains all parameters kafka information.
-type Kafka struct {
-	Capacity uint64   `yaml:"capacity"`
-	Topic    string   `yaml:"topic"`
-	GroupID  string   `yaml:"groupId"`
-	Brokers  []string `yaml:"brokers"`
-}
-
-// Status config for service.
-type Status struct {
-	Port          int    `yaml:"port"`
-	Host          string `yaml:"host"`
-	VersionPath   string `yaml:"versionPath"`
-	LivenessPath  string `yaml:"livenessPath"`
-	ReadinessPath string `yaml:"readinessPath"`
-}
-
 // Config - contains all configuration parameters in config package.
 type Config struct {
 	Project  Project  `yaml:"project"`
-	Grpc     Grpc     `yaml:"grpc"`
 	Rest     Rest     `yaml:"rest"`
 	Database Database `yaml:"database"`
-	Metrics  Metrics  `yaml:"metrics"`
-	Jaeger   Jaeger   `yaml:"jaeger"`
-	Kafka    Kafka    `yaml:"kafka"`
-	Status   Status   `yaml:"status"`
 }
 
 // ReadConfigYML - read configurations from file and init instance Config.
