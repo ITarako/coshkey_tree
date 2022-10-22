@@ -16,10 +16,6 @@ import (
 	"github.com/ITarako/coshkey_tree/internal/server"
 )
 
-var (
-	batchSize uint = 2
-)
-
 func main() {
 	if err := config.ReadConfigYML("config.yml"); err != nil {
 		log.Fatal().Err(err).Msg("Failed init configuration")
@@ -56,7 +52,7 @@ func main() {
 	}
 	defer db.Close()
 
-	if err := server.NewRestServer(db, batchSize).Start(&cfg); err != nil {
+	if err := server.NewRestServer(db).Start(&cfg); err != nil {
 		log.Error().Err(err).Msg("Failed creating rest server")
 
 		return

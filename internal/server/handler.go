@@ -38,7 +38,7 @@ func (h *Handler) getTree(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	folder, err := h.service.GetFolder(r.Context(), int64(id))
+	folder, err := h.service.GetFolder(r.Context(), int32(id))
 	if err != nil {
 		log.Error().Err(err).Msg("error get folder")
 		return

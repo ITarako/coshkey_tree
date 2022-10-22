@@ -16,6 +16,6 @@ func NewService(repository Repository) Service {
 	}
 }
 
-func (s Service) GetFolder(ctx context.Context, id int64) (*model.Folder, error) {
+func (s Service) GetFolder(ctx context.Context, id int32) (*model.Folder, error) {
 	return s.repository.GetFolder(ctx, id)
 }

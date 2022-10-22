@@ -19,14 +19,12 @@ import (
 )
 
 type RestServer struct {
-	db        *sqlx.DB
-	batchSize uint
+	db *sqlx.DB
 }
 
-func NewRestServer(db *sqlx.DB, batchSize uint) *RestServer {
+func NewRestServer(db *sqlx.DB) *RestServer {
 	return &RestServer{
-		db:        db,
-		batchSize: batchSize,
+		db: db,
 	}
 }
 
@@ -34,7 +32,7 @@ func (s *RestServer) Start(cfg *config.Config) error {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	r := tree.NewRepository(s.db, s.batchSize)
+	r := tree.NewRepository(s.db)
 	service := tree.NewService(r)
 
 	restAddr := fmt.Sprintf("%s:%v", cfg.Rest.Host, cfg.Rest.Port)

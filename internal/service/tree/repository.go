@@ -12,18 +12,16 @@ import (
 )
 
 type Repository struct {
-	db        *sqlx.DB
-	batchSize uint
+	db *sqlx.DB
 }
 
-func NewRepository(db *sqlx.DB, batchSize uint) Repository {
+func NewRepository(db *sqlx.DB) Repository {
 	return Repository{
-		db:        db,
-		batchSize: batchSize,
+		db: db,
 	}
 }
 
-func (r Repository) GetFolder(ctx context.Context, id int64) (*model.Folder, error) {
+func (r Repository) GetFolder(ctx context.Context, id int32) (*model.Folder, error) {
 	sb := database.StatementBuilder.
 		Select("id", "id_user", "id_parent", "lft", "rgt", "depth", "title", "is_active", "is_project").
 		From("folder").
