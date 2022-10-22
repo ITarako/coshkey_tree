@@ -1,5 +1,5 @@
 # Builder
-FROM golang:1.17-alpine AS builder
+FROM golang:1.19-alpine AS builder
 RUN apk add --update make git curl
 
 ARG GITHUB_PATH=github.com/ITarako/coshkey_tree

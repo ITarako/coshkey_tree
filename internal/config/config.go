@@ -32,13 +32,14 @@ type Database struct {
 	Password string `yaml:"password"`
 	Name     string `yaml:"name"`
 	SslMode  string `yaml:"sslmode"`
-	Driver   string `yaml:"driver"`
 }
 
 // Rest - contains parameter rest json connection.
 type Rest struct {
-	Port int    `yaml:"port"`
-	Host string `yaml:"host"`
+	Port         int    `yaml:"port"`
+	Host         string `yaml:"host"`
+	WriteTimeout int    `yaml:"writeTimeout"`
+	ReadTimeout  int    `yaml:"readTimeout"`
 }
 
 // Project - contains all parameters project information.

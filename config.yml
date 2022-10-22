@@ -6,6 +6,8 @@ project:
 rest:
   host: 0.0.0.0
   port: 8080
+  writeTimeout: 60 # Seconds
+  readTimeout: 0 # Seconds
 
 database:
   host: localhost
@@ -14,4 +16,3 @@ database:
   password: postgres
   name: coshkey
   sslmode: disable
-  driver: pgx

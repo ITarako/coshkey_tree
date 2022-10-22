@@ -15,6 +15,7 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"github.com/ITarako/coshkey_tree/internal/config"
+	"github.com/ITarako/coshkey_tree/internal/service/tree"
 )
 
 type RestServer struct {
@@ -33,8 +34,11 @@ func (s *RestServer) Start(cfg *config.Config) error {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
+	r := tree.NewRepository(s.db, s.batchSize)
+	service := tree.NewService(r)
+
 	restAddr := fmt.Sprintf("%s:%v", cfg.Rest.Host, cfg.Rest.Port)
-	restServer := createRestServer(restAddr)
+	restServer := createRestServer(cfg, restAddr, service)
 
 	go func() {
 		log.Info().Msgf("Rest server is running on %s", restAddr)
@@ -46,34 +50,6 @@ func (s *RestServer) Start(cfg *config.Config) error {
 
 	isReady := &atomic.Value{}
 	isReady.Store(false)
-
-	//grpcServer := grpc.NewServer(
-	//	grpc.KeepaliveParams(keepalive.ServerParameters{
-	//		MaxConnectionIdle: time.Duration(cfg.Grpc.MaxConnectionIdle) * time.Minute,
-	//		Timeout:           time.Duration(cfg.Grpc.Timeout) * time.Second,
-	//		MaxConnectionAge:  time.Duration(cfg.Grpc.MaxConnectionAge) * time.Minute,
-	//		Time:              time.Duration(cfg.Grpc.Timeout) * time.Minute,
-	//	}),
-	//	grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
-	//		grpc_ctxtags.UnaryServerInterceptor(),
-	//		grpc_prometheus.UnaryServerInterceptor,
-	//		grpc_opentracing.UnaryServerInterceptor(),
-	//		grpcrecovery.UnaryServerInterceptor(),
-	//	)),
-	//)
-
-	//r := repo.NewRepo(s.db, s.batchSize)
-	//
-	//pb.RegisterOmpTemplateApiServiceServer(grpcServer, api.NewTemplateAPI(r))
-	//grpc_prometheus.EnableHandlingTimeHistogram()
-	//grpc_prometheus.Register(grpcServer)
-	//
-	//go func() {
-	//	log.Info().Msgf("GRPC Server is listening on: %s", grpcAddr)
-	//	if err := grpcServer.Serve(l); err != nil {
-	//		log.Fatal().Err(err).Msg("Failed running gRPC server")
-	//	}
-	//}()
 
 	go func() {
 		time.Sleep(2 * time.Second)
