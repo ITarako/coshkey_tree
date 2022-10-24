@@ -1,0 +1,7 @@
+GET http://localhost:8080/tree
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "value": "content"
+}

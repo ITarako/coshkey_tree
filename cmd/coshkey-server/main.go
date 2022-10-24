@@ -7,9 +7,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
-	_ "github.com/jackc/pgx/v4"
 	_ "github.com/jackc/pgx/v4/stdlib"
-	_ "github.com/lib/pq"
 
 	"github.com/ITarako/coshkey_tree/internal/config"
 	"github.com/ITarako/coshkey_tree/internal/database"
@@ -52,7 +50,7 @@ func main() {
 	}
 	defer db.Close()
 
-	if err := server.NewRestServer(db).Start(&cfg); err != nil {
+	if err = server.NewRestServer(db).Start(&cfg); err != nil {
 		log.Error().Err(err).Msg("Failed creating rest server")
 
 		return

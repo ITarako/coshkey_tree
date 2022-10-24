@@ -1,21 +1,47 @@
 package tree
 
 import (
-	"context"
+	"github.com/jmoiron/sqlx"
 
 	"github.com/ITarako/coshkey_tree/internal/model"
+	"github.com/ITarako/coshkey_tree/internal/service/folder"
+	"github.com/ITarako/coshkey_tree/internal/service/rbac"
+	"github.com/ITarako/coshkey_tree/internal/service/user"
 )
 
-type Service struct {
-	repository Repository
+type Result struct {
+	Tree     string `json:"tree"`
+	Favorite string `json:"favorite"`
 }
 
-func NewService(repository Repository) Service {
+type Service struct {
+	db            *sqlx.DB
+	UserService   user.Service
+	FolderService folder.Service
+	RbacService   rbac.Service
+}
+
+func NewService(db *sqlx.DB) Service {
 	return Service{
-		repository: repository,
+		UserService:   user.NewService(user.NewRepository(db)),
+		FolderService: folder.NewService(folder.NewRepository(db)),
+		RbacService:   rbac.NewService(rbac.NewRepository(db)),
 	}
 }
 
-func (s Service) GetFolder(ctx context.Context, id int32) (*model.Folder, error) {
-	return s.repository.GetFolder(ctx, id)
+func (s *Service) Generate(user *model.User, folderId int32, ownTree bool) Result {
+	res := Result{}
+
+	res.Tree = s.generateMain()
+	res.Favorite = s.generateFavorite()
+
+	return res
+}
+
+func (s *Service) generateMain() string {
+	return ""
+}
+
+func (s *Service) generateFavorite() string {
+	return ""
 }
