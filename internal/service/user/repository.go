@@ -23,7 +23,7 @@ func NewRepository(db *sqlx.DB) Repository {
 	}
 }
 
-func (r Repository) GetUser(ctx context.Context, id int32) (*model.User, error) {
+func (r Repository) GetUser(ctx context.Context, id int) (*model.User, error) {
 	sb := database.StatementBuilder.
 		Select("id", "username").
 		From("\"user\"").

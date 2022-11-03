@@ -17,7 +17,7 @@ func NewService(repository Repository) Service {
 	}
 }
 
-func (s Service) GetUser(ctx context.Context, id int32) (*model.User, error) {
+func (s Service) GetUser(ctx context.Context, id int) (*model.User, error) {
 	if id == 0 {
 		return nil, internalErrors.ErrNotFound
 	}

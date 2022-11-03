@@ -32,7 +32,7 @@ func (s *RestServer) Start(cfg *config.Config) error {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	service := tree.NewService(s.db)
+	service := tree.NewService(s.db, cfg.Project.CoshkeyUrl)
 
 	restAddr := fmt.Sprintf("%s:%v", cfg.Rest.Host, cfg.Rest.Port)
 	restServer := createRestServer(cfg, restAddr, service)

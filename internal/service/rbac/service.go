@@ -5,7 +5,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	model "github.com/ITarako/coshkey_tree/internal/model/rbac"
+	"github.com/ITarako/coshkey_tree/internal/model"
 )
 
 type Service struct {
@@ -18,7 +18,7 @@ func NewService(repository Repository) Service {
 	}
 }
 
-func (s Service) GetRolesByUser(ctx context.Context, userId int32) (map[string]model.AuthItem, error) {
+func (s Service) GetRolesByUser(ctx context.Context, userId int) (map[string]model.AuthItem, error) {
 	roles, err := s.repository.GetRolesByUser(ctx, userId)
 	if err != nil {
 		return nil, errors.Wrap(err, "repository.GetRolesByUser()")
@@ -32,7 +32,7 @@ func (s Service) GetRolesByUser(ctx context.Context, userId int32) (map[string]m
 	return res, nil
 }
 
-func (s Service) CheckRole(ctx context.Context, roleName string, userId int32) (bool, error) {
+func (s Service) CheckRole(ctx context.Context, roleName string, userId int) (bool, error) {
 	roles, err := s.GetRolesByUser(ctx, userId)
 	if err != nil {
 		return false, errors.Wrap(err, "service.GetRolesByUser()")

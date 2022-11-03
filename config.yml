@@ -2,6 +2,7 @@ project:
   name: CoshKey Tree API
   debug: true
   environment: development
+  coshkeyUrl: http://coshkey.local
 
 rest:
   host: 0.0.0.0
@@ -14,5 +15,5 @@ database:
   port: 5432
   user: postgres
   password: postgres
-  name: coshkey
+  name: coshkey_prod
   sslmode: disable

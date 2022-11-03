@@ -8,7 +8,7 @@ import (
 	"github.com/pkg/errors"
 
 	"github.com/ITarako/coshkey_tree/internal/database"
-	"github.com/ITarako/coshkey_tree/internal/model/rbac"
+	"github.com/ITarako/coshkey_tree/internal/model"
 )
 
 type Repository struct {
@@ -21,14 +21,14 @@ func NewRepository(db *sqlx.DB) Repository {
 	}
 }
 
-func (r Repository) GetRolesByUser(ctx context.Context, userId int32) ([]model.AuthItem, error) {
+func (r Repository) GetRolesByUser(ctx context.Context, userId int) ([]model.AuthItem, error) {
 	sb := database.StatementBuilder.
 		Select("ai.name", "ai.type", "ai.description").
 		From("auth_item as ai").
 		LeftJoin("auth_assignment as aa on aa.item_name=ai.name").
 		Where(sq.And{
 			sq.Eq{"aa.user_id": userId},
-			sq.Eq{"ai.type": model.TYPE_ROLE},
+			sq.Eq{"ai.type": model.TypeRole},
 		})
 
 	query, args, err := sb.ToSql()

@@ -1,7 +1,7 @@
 package model
 
 type User struct {
-	Id       int32  `db:"id"`
+	Id       int    `db:"id"`
 	Username string `db:"username"`
 	IsAdmin  bool
 }

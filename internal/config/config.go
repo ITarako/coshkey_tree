@@ -47,6 +47,7 @@ type Project struct {
 	Debug       bool   `yaml:"debug"`
 	Name        string `yaml:"name"`
 	Environment string `yaml:"environment"`
+	CoshkeyUrl  string `yaml:"coshkeyUrl"`
 	Version     string
 	CommitHash  string
 }
