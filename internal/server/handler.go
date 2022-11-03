@@ -62,7 +62,7 @@ func (h *Handler) getTree(w http.ResponseWriter, r *http.Request) {
 	}
 	user.IsAdmin = userIsAdmin
 
-	res := h.treeService.Generate(user, requestBody.SelectedFolderId, requestBody.OwnTree)
+	res := h.treeService.Generate(r.Context(), user, requestBody.SelectedFolderId, requestBody.OwnTree)
 
 	//_, _ = fmt.Fprintf(w, "requestBody: %+v\n", requestBody)
 	writeSuccess(w, res)
