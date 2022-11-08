@@ -14,7 +14,7 @@ import (
 )
 
 type Result struct {
-	Tree     string `json:"tree"`
+	Main     string `json:"main"`
 	Favorite string `json:"favorite"`
 }
 
@@ -45,7 +45,7 @@ func (s Service) Generate(ctx context.Context, user *model.User, folderId int, o
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		res.Tree = s.generateMain(ctx, user, folderId, ownTree)
+		res.Main = s.generateMain(ctx, user, folderId, ownTree)
 	}()
 
 	wg.Add(1)

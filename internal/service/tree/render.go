@@ -29,17 +29,17 @@ func (s Service) renderMainItem(folder model.Folder, user *model.User, folderId 
 			id='jstree-node-%d'
 			data-url='%s'
 			data-idfolder='%d'
-			data-jstree='{"icon":"item-type fa fa-folder fa-lg","opened": false, "selected":%t}'
+			data-jstree='{"icon":"item-type fa fa-folder fa-lg","opened":false, "selected":%t}'
 		>`
 		url := s.CoshkeyUrl + "/" + strconv.Itoa(folder.Id)
-		html += fmt.Sprintf(li, folder.Id, url, folder.Id, folderId == folderId)
+		html += fmt.Sprintf(li, folder.Id, url, folder.Id, folderId == folder.Id)
 
 		span := "<span class='folders-tytle'>%s</span>"
 		html += fmt.Sprintf(span, folder.Title)
 
 		if len(folder.Children) > 0 {
 			html += "<ul>"
-			for _, child := range folder.Children {
+			for _, child := range folder.GetSortedChildren() {
 				html += s.renderMainItem(child, user, folderId)
 			}
 			html += "</ul>"
@@ -51,14 +51,14 @@ func (s Service) renderMainItem(folder model.Folder, user *model.User, folderId 
 			id='jstree-node-%d'
 			data-url='%s'
 			data-idfolder='%d'
-			data-jstree='{"icon":"item-type fa fa-folder fa-lg","opened": false, "selected":%t}'
+			data-jstree='{"icon":"item-type fa fa-folder fa-lg","opened":false, "selected":%t}'
 		>`
 		url := s.CoshkeyUrl + "/" + strconv.Itoa(folder.Id)
-		html += fmt.Sprintf(li, folder.Id, url, folder.Id, folderId == folderId)
+		html += fmt.Sprintf(li, folder.Id, url, folder.Id, folderId == folder.Id)
 
 		var item string
 		if !folder.IsActive {
-			item = "<i class='fa fa-minus-squire-o deleted' aria-hidden='true' title='Папка удалена'></i> "
+			item = "<i class='fa fa-minus-square-o deleted' aria-hidden='true' title='Папка удалена'></i> "
 		}
 		span := "<span class='folders-tytle'>%s%s</span>"
 		html += fmt.Sprintf(span, item, folder.Title)
@@ -83,7 +83,7 @@ func (s Service) renderFavorite(folders map[int]model.FavoriteFolder, user *mode
 		id='jstree-favorite-root'
 		data-url='favorite'
 		data-idfolder='%d'
-		data-jstree='{"icon":"fa fa-star fa-lg","opened": false, "selected":%t}'
+		data-jstree='{"icon":"fa fa-star fa-lg","opened":false, "selected":%t}'
 >`
 	html += fmt.Sprintf(li, model.FolderIdForTree, folderId == model.FolderIdForTree)
 	html += "<span class='folders-tytle'>Избранное</span>"
@@ -109,7 +109,7 @@ func (s Service) renderFavoriteItem(folder model.FavoriteFolder) string {
 		class='favorite-tree'
 		data-url='%s'
 		data-idfolder='%d'
-		data-jstree='{"icon":"fa fa-folder fa-lg","opened": false, "selected":false}'
+		data-jstree='{"icon":"fa fa-folder fa-lg","opened":false, "selected":false}'
 >`
 	url := s.CoshkeyUrl + "/" + strconv.Itoa(folder.Id)
 	html := fmt.Sprintf(li, folder.Id, url, folder.Id)
@@ -119,7 +119,7 @@ func (s Service) renderFavoriteItem(folder model.FavoriteFolder) string {
 
 	if len(folder.Children) > 0 {
 		html += "<ul>"
-		for _, child := range folder.Children {
+		for _, child := range folder.GetSortedChildren() {
 			if child.IsFavorite || child.CountFavoriteKeys > 0 || s.hasFavoriteChild(child) {
 				html += s.renderFavoriteItem(child)
 			}
@@ -131,17 +131,17 @@ func (s Service) renderFavoriteItem(folder model.FavoriteFolder) string {
 	return html
 }
 
-func setCategoryTag(category string) string {
+func setCategoryTag(category int) string {
 	html := "<ul>"
 	switch category {
 	case model.PrivateFolder:
 		html += "<li class='js__category_title' data-category='Личные папки'></li>"
 	case model.PrivateProject:
-		html += "<li class='js__category_title' data-category='Мои проекты'></li>"
+		html += "<li class='js__category_project' data-category='Мои проекты'></li>"
 	case model.SharedProject:
 		html += "<li class='js__category_shared_project' data-category='Расшаренные проекты'></li>"
 	case model.SharedFolder:
-		html += "<li class='js__category_shared_project' data-category='Расшаренные папки'></li>"
+		html += "<li class='js__category_shared_folder' data-category='Расшаренные папки'></li>"
 	}
 
 	html += "</ul>"
