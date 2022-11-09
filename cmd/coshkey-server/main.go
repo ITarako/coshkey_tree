@@ -7,7 +7,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
-	_ "github.com/jackc/pgx/v4/stdlib"
+	_ "github.com/jackc/pgx/v5/stdlib"
 
 	"github.com/ITarako/coshkey_tree/internal/config"
 	"github.com/ITarako/coshkey_tree/internal/database"

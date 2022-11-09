@@ -10,7 +10,7 @@ import (
 
 	"github.com/ITarako/coshkey_tree/internal/database"
 	"github.com/ITarako/coshkey_tree/internal/model"
-	internalErrors "github.com/ITarako/coshkey_tree/internal/pkg/errors"
+	"github.com/ITarako/coshkey_tree/internal/pkg/errors"
 )
 
 type Repository struct {
@@ -39,7 +39,7 @@ func (r Repository) GetUser(ctx context.Context, id int) (*model.User, error) {
 	err = r.db.QueryRowxContext(ctx, query, args...).StructScan(user)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, internalErrors.ErrNotFound
+			return nil, internalerrors.ErrNotFound
 		}
 		return nil, errors.Wrap(err, "db.QueryRowxContext()")
 	}

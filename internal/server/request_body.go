@@ -1,7 +1,7 @@
 package server
 
 type TreeRequestBody struct {
-	SelectedFolderId int  `json:"selected_folder_id"`
-	UserId           int  `json:"user_id"`
-	OwnTree          bool `json:"own_tree"`
+	SelectedFolderId int  `schema:"selected_folder_id"`
+	UserId           int  `schema:"user_id"`
+	OwnTree          bool `schema:"own_tree"`
 }

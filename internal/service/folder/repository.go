@@ -5,13 +5,13 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/ITarako/coshkey_tree/internal/database"
+	"github.com/ITarako/coshkey_tree/internal/model"
+	"github.com/ITarako/coshkey_tree/internal/pkg/errors"
+
 	sq "github.com/Masterminds/squirrel"
 	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
-
-	"github.com/ITarako/coshkey_tree/internal/database"
-	"github.com/ITarako/coshkey_tree/internal/model"
-	internalErrors "github.com/ITarako/coshkey_tree/internal/pkg/errors"
 )
 
 type Repository struct {
@@ -45,7 +45,7 @@ func (r Repository) RootFolder(ctx context.Context, userId int) (*model.Folder, 
 	err = r.db.QueryRowxContext(ctx, query, args...).StructScan(folder)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, internalErrors.ErrNotFound
+			return nil, internalerrors.ErrNotFound
 		}
 		return nil, errors.Wrap(err, "db.QueryRowxContext()")
 	}

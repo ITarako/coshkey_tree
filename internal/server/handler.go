@@ -1,14 +1,14 @@
 package server
 
 import (
-	"encoding/json"
 	"net/http"
 
-	"github.com/gorilla/mux"
-	"github.com/pkg/errors"
-
-	internalErrors "github.com/ITarako/coshkey_tree/internal/pkg/errors"
+	"github.com/ITarako/coshkey_tree/internal/pkg/errors"
+	"github.com/ITarako/coshkey_tree/internal/server/helper"
 	"github.com/ITarako/coshkey_tree/internal/service/tree"
+	"github.com/gorilla/mux"
+	"github.com/gorilla/schema"
+	"github.com/pkg/errors"
 )
 
 type Handler struct {
@@ -23,7 +23,6 @@ func NewHandler(treeService tree.Service) *Handler {
 		treeService: treeService,
 	}
 
-	//router.HandleFunc("/tree", handler.getTree).Methods(http.MethodGet).Queries("user_id", "{user_id:[0-9]+}")
 	router.HandleFunc("/tree", handler.getTree).Methods(http.MethodGet)
 
 	return handler
@@ -34,36 +33,32 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) getTree(w http.ResponseWriter, r *http.Request) {
-	//args := r.URL.Query()
-	//userId, _ := strconv.Atoi(args.Get("user_id"))
-	requestBody := new(TreeRequestBody)
+	requestData := new(TreeRequestBody)
 
-	defer r.Body.Close()
-	if err := json.NewDecoder(r.Body).Decode(requestBody); err != nil {
-		writeError(w, nil, http.StatusBadRequest, err, "json decode")
+	if err := schema.NewDecoder().Decode(requestData, r.URL.Query()); err != nil {
+		serverhelper.WriteError(w, nil, http.StatusBadRequest, err, "json decode")
 		return
 	}
 
-	user, err := h.treeService.UserService.GetUser(r.Context(), requestBody.UserId)
+	user, err := h.treeService.UserService.GetUser(r.Context(), requestData.UserId)
 	if err != nil {
-		if errors.Is(err, internalErrors.ErrNotFound) {
-			writeError(w, nil, http.StatusNotFound, err, "user not found")
+		if errors.Is(err, internalerrors.ErrNotFound) {
+			serverhelper.WriteError(w, nil, http.StatusNotFound, err, "user not found")
 			return
 		}
 
-		writeError(w, nil, http.StatusBadRequest, err, "UserService.GetUser")
+		serverhelper.WriteError(w, nil, http.StatusBadRequest, err, "UserService.GetUser")
 		return
 	}
 
 	userIsAdmin, err := h.treeService.RbacService.CheckRole(r.Context(), "admin", user.Id)
 	if err != nil {
-		writeError(w, nil, http.StatusBadRequest, err, "RbacService.CheckRole")
+		serverhelper.WriteError(w, nil, http.StatusBadRequest, err, "RbacService.CheckRole")
 		return
 	}
 	user.IsAdmin = userIsAdmin
 
-	res := h.treeService.Generate(r.Context(), user, requestBody.SelectedFolderId, requestBody.OwnTree)
+	res := h.treeService.Generate(r.Context(), user, requestData.SelectedFolderId, requestData.OwnTree)
 
-	//_, _ = fmt.Fprintf(w, "requestBody: %+v\n", requestBody)
-	writeSuccess(w, res)
+	serverhelper.WriteSuccess(w, res)
 }

@@ -3,6 +3,7 @@ project:
   debug: true
   environment: development
   coshkeyUrl: http://coshkey.local
+  coshkeyToken: qwerty
 
 rest:
   host: 0.0.0.0
