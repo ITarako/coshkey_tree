@@ -22,61 +22,42 @@ const (
 )
 
 type Folder struct {
-	Id        int    `db:"id"`
-	IdUser    int    `db:"id_user"`
-	IdParent  int    `db:"id_parent"`
-	Lft       int    `db:"lft"`
-	Rgt       int    `db:"rgt"`
-	Depth     int    `db:"depth"`
-	Title     string `db:"title"`
-	IsActive  bool   `db:"is_active"`
-	IsProject bool   `db:"is_project"`
-	Children  map[int]Folder
-}
-
-type FavoriteFolder struct {
-	Folder
-	IsFavorite        bool `db:"is_favorite"`
-	CountFavoriteKeys int  `db:"count_favorite_keys"`
-	Children          map[int]FavoriteFolder
+	Id                int    `db:"id"`
+	IdUser            int    `db:"id_user"`
+	IdParent          int    `db:"id_parent"`
+	Lft               int    `db:"lft"`
+	Rgt               int    `db:"rgt"`
+	Depth             int    `db:"depth"`
+	Title             string `db:"title"`
+	IsActive          bool   `db:"is_active"`
+	IsProject         bool   `db:"is_project"`
+	IsFavorite        bool   `db:"is_favorite"`
+	CountFavoriteKeys int    `db:"count_favorite_keys"`
+	Children          map[int]Folder
 }
 
 func (f Folder) GetLowerTitle() string {
 	return strings.ToLower(f.Title)
 }
 
-func (f Folder) GetIdUser() int {
-	return f.IdUser
-}
-
-func (f Folder) GetIsProject() bool {
-	return f.IsProject
-}
-
-type Folded interface {
-	GetLowerTitle() string
-	GetIdUser() int
-	GetIsProject() bool
-}
-
-func SetClassification[T Folded](roots map[int]T, user *User) [][]T {
-	var privateProject, sharedProject, privateFolder, sharedFolder []T
+func SetClassification(roots map[int]Folder, user *User) [][]Folder {
+	var privateProject, sharedProject, privateFolder, sharedFolder []Folder
 
 	sortedSlice := GetSortedSliceFromMap(roots)
 
 	for _, root := range sortedSlice {
-		if root.GetIdUser() == user.Id && root.GetIsProject() {
+		if root.IdUser == user.Id && root.IsProject {
 			privateProject = append(privateProject, root)
-		} else if root.GetIdUser() != user.Id && root.GetIsProject() {
+		} else if root.IdUser != user.Id && root.IsProject {
 			sharedProject = append(sharedProject, root)
-		} else if root.GetIdUser() == user.Id && !root.GetIsProject() {
+		} else if root.IdUser == user.Id && !root.IsProject {
 			privateFolder = append(privateFolder, root)
-		} else if root.GetIdUser() != user.Id && !root.GetIsProject() {
+		} else if root.IdUser != user.Id && !root.IsProject {
 			sharedFolder = append(sharedFolder, root)
 		}
 	}
 
-	result := make([][]T, 4)
+	result := make([][]Folder, 4)
 	result[PrivateProject] = privateProject
 	result[SharedProject] = sharedProject
 	result[PrivateFolder] = privateFolder
@@ -84,41 +65,11 @@ func SetClassification[T Folded](roots map[int]T, user *User) [][]T {
 	return result
 }
 
-func GetSortedSliceFromMap[T Folded](folders map[int]T) []T {
-	sortedSlice := make([]T, len(folders))
+func GetSortedSliceFromMap(folders map[int]Folder) []Folder {
+	sortedSlice := make([]Folder, len(folders))
 	i := 0
 	for _, root := range folders {
 		sortedSlice[i] = root
-		i++
-	}
-
-	sort.Slice(sortedSlice, func(i, j int) bool {
-		return sortedSlice[i].GetLowerTitle() < sortedSlice[j].GetLowerTitle()
-	})
-
-	return sortedSlice
-}
-
-func (f Folder) GetSortedChildren() []Folder {
-	sortedSlice := make([]Folder, len(f.Children))
-	i := 0
-	for _, child := range f.Children {
-		sortedSlice[i] = child
-		i++
-	}
-
-	sort.Slice(sortedSlice, func(i, j int) bool {
-		return sortedSlice[i].GetLowerTitle() < sortedSlice[j].GetLowerTitle()
-	})
-
-	return sortedSlice
-}
-
-func (f FavoriteFolder) GetSortedChildren() []FavoriteFolder {
-	sortedSlice := make([]FavoriteFolder, len(f.Children))
-	i := 0
-	for _, child := range f.Children {
-		sortedSlice[i] = child
 		i++
 	}
 

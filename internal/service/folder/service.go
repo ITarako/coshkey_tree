@@ -53,7 +53,7 @@ func (s Service) UserShareFolderCommand(ctx context.Context, user *model.User, f
 	}
 }
 
-func (s Service) FavoriteCommand(ctx context.Context, user *model.User) map[int]model.FavoriteFolder {
+func (s Service) FavoriteCommand(ctx context.Context, user *model.User) map[int]model.Folder {
 	favorites, _ := s.repository.UserFavorite(ctx, user.Id)
 
 	return favorites

@@ -184,7 +184,7 @@ func (r Repository) getWhereFilter(ctx context.Context, userId int) (string, err
 	return condition, nil
 }
 
-func (r Repository) UserFavorite(ctx context.Context, userId int) (map[int]model.FavoriteFolder, error) {
+func (r Repository) UserFavorite(ctx context.Context, userId int) (map[int]model.Folder, error) {
 	query := `
 		SELECT
 			folder.id as id,
@@ -216,9 +216,9 @@ func (r Repository) UserFavorite(ctx context.Context, userId int) (map[int]model
 		_ = rows.Close()
 	}()
 
-	var res = make(map[int]model.FavoriteFolder)
+	var res = make(map[int]model.Folder)
 	for rows.Next() {
-		var favorite model.FavoriteFolder
+		var favorite model.Folder
 		if err = rows.StructScan(&favorite); err == nil {
 			res[favorite.Id] = favorite
 		}

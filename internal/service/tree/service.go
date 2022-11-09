@@ -136,14 +136,14 @@ func (s Service) buildMainTree(folders map[int]model.Folder) map[int]model.Folde
 	return rootsFolder
 }
 
-func (s Service) buildFavoriteTree(folders map[int]model.FavoriteFolder) map[int]model.FavoriteFolder {
-	rootsFolder := make(map[int]model.FavoriteFolder)
+func (s Service) buildFavoriteTree(folders map[int]model.Folder) map[int]model.Folder {
+	rootsFolder := make(map[int]model.Folder)
 
 	for id, f := range folders {
 		parent, ok := folders[f.IdParent]
 		if f.IdParent > 0 && ok {
 			if len(parent.Children) == 0 {
-				parent.Children = make(map[int]model.FavoriteFolder)
+				parent.Children = make(map[int]model.Folder)
 			}
 
 			parent.Children[id] = f
@@ -157,7 +157,7 @@ func (s Service) buildFavoriteTree(folders map[int]model.FavoriteFolder) map[int
 		}
 	}
 
-	roots := make(map[int]model.FavoriteFolder)
+	roots := make(map[int]model.Folder)
 	for id, f := range rootsFolder {
 		if f.IsFavorite || f.CountFavoriteKeys > 0 || s.hasFavoriteChild(f) {
 			roots[id] = f
@@ -166,7 +166,7 @@ func (s Service) buildFavoriteTree(folders map[int]model.FavoriteFolder) map[int
 	return roots
 }
 
-func (s Service) hasFavoriteChild(f model.FavoriteFolder) bool {
+func (s Service) hasFavoriteChild(f model.Folder) bool {
 	if len(f.Children) == 0 {
 		return false
 	}

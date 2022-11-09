@@ -39,7 +39,7 @@ func (s Service) renderMainItem(folder model.Folder, user *model.User, folderId 
 
 		if len(folder.Children) > 0 {
 			html += "<ul>"
-			for _, child := range folder.GetSortedChildren() {
+			for _, child := range model.GetSortedSliceFromMap(folder.Children) {
 				html += s.renderMainItem(child, user, folderId)
 			}
 			html += "</ul>"
@@ -65,7 +65,7 @@ func (s Service) renderMainItem(folder model.Folder, user *model.User, folderId 
 
 		if len(folder.Children) > 0 {
 			html += "<ul>"
-			for _, child := range folder.Children {
+			for _, child := range model.GetSortedSliceFromMap(folder.Children) {
 				html += s.renderMainItem(child, user, folderId)
 			}
 			html += "</ul>"
@@ -77,7 +77,7 @@ func (s Service) renderMainItem(folder model.Folder, user *model.User, folderId 
 	return html
 }
 
-func (s Service) renderFavorite(folders map[int]model.FavoriteFolder, user *model.User, folderId int) string {
+func (s Service) renderFavorite(folders map[int]model.Folder, user *model.User, folderId int) string {
 	html := "<ul>"
 	li := `<li
 		id='jstree-favorite-root'
@@ -103,7 +103,7 @@ func (s Service) renderFavorite(folders map[int]model.FavoriteFolder, user *mode
 	return html
 }
 
-func (s Service) renderFavoriteItem(folder model.FavoriteFolder) string {
+func (s Service) renderFavoriteItem(folder model.Folder) string {
 	li := `<li
 		id='jstree-node-%d'
 		class='favorite-tree'
@@ -119,7 +119,7 @@ func (s Service) renderFavoriteItem(folder model.FavoriteFolder) string {
 
 	if len(folder.Children) > 0 {
 		html += "<ul>"
-		for _, child := range folder.GetSortedChildren() {
+		for _, child := range model.GetSortedSliceFromMap(folder.Children) {
 			if child.IsFavorite || child.CountFavoriteKeys > 0 || s.hasFavoriteChild(child) {
 				html += s.renderFavoriteItem(child)
 			}
