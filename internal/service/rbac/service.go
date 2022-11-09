@@ -5,7 +5,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/ITarako/coshkey_tree/internal/model"
+	"coshkey_tree/internal/model"
 )
 
 type Service struct {

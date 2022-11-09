@@ -8,9 +8,9 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
 
-	"github.com/ITarako/coshkey_tree/internal/database"
-	"github.com/ITarako/coshkey_tree/internal/model"
-	"github.com/ITarako/coshkey_tree/internal/pkg/errors"
+	"coshkey_tree/internal/database"
+	"coshkey_tree/internal/model"
+	"coshkey_tree/internal/pkg/errors"
 )
 
 type Repository struct {

@@ -5,9 +5,9 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/ITarako/coshkey_tree/internal/database"
-	"github.com/ITarako/coshkey_tree/internal/model"
-	"github.com/ITarako/coshkey_tree/internal/pkg/errors"
+	"coshkey_tree/internal/database"
+	"coshkey_tree/internal/model"
+	"coshkey_tree/internal/pkg/errors"
 
 	sq "github.com/Masterminds/squirrel"
 	"github.com/jmoiron/sqlx"

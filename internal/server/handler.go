@@ -3,9 +3,9 @@ package server
 import (
 	"net/http"
 
-	"github.com/ITarako/coshkey_tree/internal/pkg/errors"
-	"github.com/ITarako/coshkey_tree/internal/server/helper"
-	"github.com/ITarako/coshkey_tree/internal/service/tree"
+	"coshkey_tree/internal/pkg/errors"
+	"coshkey_tree/internal/server/helper"
+	"coshkey_tree/internal/service/tree"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
 	"github.com/pkg/errors"

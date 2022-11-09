@@ -4,7 +4,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/ITarako/coshkey_tree/internal/server/helper"
+	"coshkey_tree/internal/server/helper"
 )
 
 func AuthToken(next http.Handler, token string) http.Handler {

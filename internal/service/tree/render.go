@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/ITarako/coshkey_tree/internal/model"
+	"coshkey_tree/internal/model"
 )
 
 func (s Service) renderMain(folders map[int]model.Folder, user *model.User, folderId int) string {

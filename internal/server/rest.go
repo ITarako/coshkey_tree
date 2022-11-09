@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/ITarako/coshkey_tree/internal/config"
-	"github.com/ITarako/coshkey_tree/internal/server/middleware"
-	"github.com/ITarako/coshkey_tree/internal/service/tree"
+	"coshkey_tree/internal/config"
+	"coshkey_tree/internal/server/middleware"
+	"coshkey_tree/internal/service/tree"
 )
 
 func createRestServer(cfg *config.Config, addr string, service tree.Service) *http.Server {

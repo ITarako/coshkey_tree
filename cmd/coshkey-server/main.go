@@ -9,9 +9,9 @@ import (
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 
-	"github.com/ITarako/coshkey_tree/internal/config"
-	"github.com/ITarako/coshkey_tree/internal/database"
-	"github.com/ITarako/coshkey_tree/internal/server"
+	"coshkey_tree/internal/config"
+	"coshkey_tree/internal/database"
+	"coshkey_tree/internal/server"
 )
 
 func main() {

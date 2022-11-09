@@ -14,8 +14,8 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/rs/zerolog/log"
 
-	"github.com/ITarako/coshkey_tree/internal/config"
-	"github.com/ITarako/coshkey_tree/internal/service/tree"
+	"coshkey_tree/internal/config"
+	"coshkey_tree/internal/service/tree"
 )
 
 type RestServer struct {

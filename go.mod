@@ -1,4 +1,4 @@
-module github.com/ITarako/coshkey_tree
+module coshkey_tree
 
 go 1.19
 

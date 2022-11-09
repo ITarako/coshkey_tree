@@ -6,11 +6,11 @@ import (
 
 	"github.com/jmoiron/sqlx"
 
-	"github.com/ITarako/coshkey_tree/internal/model"
-	"github.com/ITarako/coshkey_tree/internal/service/folder"
-	"github.com/ITarako/coshkey_tree/internal/service/rbac"
-	"github.com/ITarako/coshkey_tree/internal/service/right"
-	"github.com/ITarako/coshkey_tree/internal/service/user"
+	"coshkey_tree/internal/model"
+	"coshkey_tree/internal/service/folder"
+	"coshkey_tree/internal/service/rbac"
+	"coshkey_tree/internal/service/right"
+	"coshkey_tree/internal/service/user"
 )
 
 type Result struct {
