@@ -1,6 +1,3 @@
 .idea/
-.cache
-.venv
 bin/
-data/
-main
+config.yml
