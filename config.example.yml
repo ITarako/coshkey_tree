@@ -1,5 +1,5 @@
 project:
-  name: CoshKey Tree API
+  name: CoshKey API
   debug: true
   environment: development
   coshkeyUrl: http://coshkey.local

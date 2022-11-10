@@ -7,12 +7,6 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// Build information -ldflags .
-const (
-	version    string = "dev"
-	commitHash string = "-"
-)
-
 var cfg *Config
 
 // GetConfigInstance returns service config
@@ -49,8 +43,6 @@ type Project struct {
 	Environment  string `yaml:"environment"`
 	CoshkeyUrl   string `yaml:"coshkeyUrl"`
 	CoshkeyToken string `yaml:"coshkeyToken"`
-	Version      string
-	CommitHash   string
 }
 
 // Config - contains all configuration parameters in config package.
@@ -75,12 +67,9 @@ func ReadConfigYML(filePath string) error {
 	}()
 
 	decoder := yaml.NewDecoder(file)
-	if err := decoder.Decode(&cfg); err != nil {
+	if err = decoder.Decode(&cfg); err != nil {
 		return err
 	}
-
-	cfg.Project.Version = version
-	cfg.Project.CommitHash = commitHash
 
 	return nil
 }

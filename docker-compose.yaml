@@ -1,12 +1,14 @@
 version: "3.9"
 
 services:
-  coshkey-tree-api:
+  coshkey_api:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: coshkey_api
     restart: unless-stopped
     ports:
-      - 8080:8080 # Rest
+      - "8080:8080"
+    network_mode: "host"
     volumes:
-      - ./config.yml:/root/config.yml
+      - ./config.yml:/opt/project/config.yml

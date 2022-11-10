@@ -2,9 +2,7 @@
 FROM golang:1.19-alpine AS builder
 RUN apk add --update make git curl
 
-ARG GITHUB_PATH=github.com/ITarako/coshkey_tree
-
-WORKDIR /home/${GITHUB_PATH}
+WORKDIR /opt/project
 
 COPY . .
 RUN make build
@@ -12,12 +10,12 @@ RUN make build
 
 # Coshkey Server
 FROM alpine:latest as server
-LABEL org.opencontainers.image.source https://${GITHUB_PATH}
 RUN apk --no-cache add ca-certificates
-WORKDIR /root/
 
-COPY --from=builder /home/${GITHUB_PATH}/bin/coshkey-server .
-COPY --from=builder /home/${GITHUB_PATH}/config.yml .
+WORKDIR /opt/project
+
+COPY --from=builder /opt/project/bin/coshkey-server .
+COPY --from=builder /opt/project/config.yml .
 
 RUN chown root:root coshkey-server
 
