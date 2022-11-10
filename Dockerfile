@@ -14,11 +14,11 @@ RUN apk --no-cache add ca-certificates
 
 WORKDIR /opt/project
 
-COPY --from=builder /opt/project/bin/coshkey-server .
+COPY --from=builder /opt/project/bin/coshkey_server .
 COPY --from=builder /opt/project/config.yml .
 
-RUN chown root:root coshkey-server
+RUN chown root:root coshkey_server
 
 EXPOSE 8080
 
-CMD ["./coshkey-server"]
+CMD ["./coshkey_server"]

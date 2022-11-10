@@ -1,43 +1,51 @@
-# Coshkey Tree
+# Coshkey Go Service
 
 ---
 
-## Build project
+## Сборка и запуск проекта
 
-### Local
+### Инициализация настроек
 
-For local assembly you need to perform
-
-```sh
-$ make build # Build project
-```
-## Running
-
-### For local development
-
-```zsh
-$ docker-compose up -d
-```
-
----
-
-## Services
-
-### Rest:
-
-- http://localhost:8080
+Сперва необходимо создать файл настроек ```config.yaml```:
 
 ```sh
-[I] ➜ curl -s -X 'POST' \
-  'http://localhost:8080/v1/templates' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "id": "1"
-}' | jq .
-{
-  "code": 5,
-  "message": "template not found",
-  "details": []
-}
+make init-config
 ```
+И затем заполнить его своими данными
+
+### Локальное окружение
+
+Для сборки исполняемого файла и его запуска надо выполнить команды:
+
+```sh
+make build
+./bin/coshkey_server
+```
+
+Или для запуска приложения без сборки:
+
+```sh
+make run
+```
+
+### Docker
+
+Для запуска приложения в докер контейнере надо выполнить:
+
+```sh
+make docker-init
+```
+
+Цель Makefile ```docker-pull```, позволяет предварительно загрузить образы из docker.hub, без необходимости логина.
+
+После первоначального подтягивания образов, для запуска достаточно выполнять:
+
+```sh
+make docker-up
+```
+
+## Запросы
+
+После успешного запуска, сервис доступен по адресу http://localhost:8080
+
+Примеры запросов лежат в файле [request.http](request.http)
