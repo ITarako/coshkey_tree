@@ -12,13 +12,13 @@ var StatementBuilder = sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
 func NewPostgres(dsn string) (*sqlx.DB, error) {
 	db, err := sqlx.Open("pgx", dsn)
 	if err != nil {
-		log.Error().Err(err).Msgf("failed to create database connection")
+		log.Error().Err(err).Msg("Failed to create database connection")
 
 		return nil, err
 	}
 
 	if err = db.Ping(); err != nil {
-		log.Error().Err(err).Msgf("failed ping the database")
+		log.Error().Err(err).Msg("Failed ping the database")
 
 		return nil, err
 	}

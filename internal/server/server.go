@@ -67,9 +67,9 @@ func (s *RestServer) Start(cfg *config.Config) error {
 	isReady.Store(false)
 
 	if err := restServer.Shutdown(ctx); err != nil {
-		log.Error().Err(err).Msg("restServer.Shutdown")
+		log.Error().Err(err).Msg("Rest Server shutdown error")
 	} else {
-		log.Info().Msg("restServer shut down correctly")
+		log.Info().Msg("Rest server shutdown correctly")
 	}
 
 	return nil

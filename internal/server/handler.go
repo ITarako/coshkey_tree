@@ -36,7 +36,7 @@ func (h *Handler) getTree(w http.ResponseWriter, r *http.Request) {
 	requestData := new(TreeRequestBody)
 
 	if err := schema.NewDecoder().Decode(requestData, r.URL.Query()); err != nil {
-		serverhelper.WriteError(w, nil, http.StatusBadRequest, err, "json decode")
+		serverhelper.WriteError(w, nil, http.StatusBadRequest, err, "query params decode error")
 		return
 	}
 

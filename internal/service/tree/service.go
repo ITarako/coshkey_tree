@@ -19,7 +19,6 @@ type Result struct {
 }
 
 type Service struct {
-	db            *sqlx.DB
 	UserService   user.Service
 	FolderService folder.Service
 	RbacService   rbac.Service
@@ -102,12 +101,20 @@ func (s Service) generateMain(ctx context.Context, user *model.User, folderId in
 	for f := range folderChan {
 		folders[f.Id] = f
 	}
+	if len(folders) == 0 {
+		return ""
+	}
+
 	tree := s.buildMainTree(folders)
 	return s.renderMain(tree, user, folderId)
 }
 
 func (s Service) generateFavorite(ctx context.Context, user *model.User, folderId int) string {
-	folders := s.FolderService.FavoriteCommand(ctx, user)
+	folders, err := s.FolderService.FavoriteCommand(ctx, user)
+	if err != nil {
+		return ""
+	}
+
 	tree := s.buildFavoriteTree(folders)
 	return s.renderFavorite(tree, user, folderId)
 }

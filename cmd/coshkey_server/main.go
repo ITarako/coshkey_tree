@@ -46,7 +46,9 @@ func main() {
 	if err != nil {
 		log.Fatal().Err(err).Msg("Failed init postgres")
 	}
-	defer db.Close()
+	defer func() {
+		_ = db.Close()
+	}()
 
 	if err = server.NewRestServer(db).Start(&cfg); err != nil {
 		log.Error().Err(err).Msg("Failed creating rest server")
